@@ -11,5 +11,5 @@ def play():
             play()
         else:
             pygame.mixer.music.load(path.join(snd_dir, soundtrack))
-            pygame.mixer.music.set_volume(0.4)
+            pygame.mixer.music.set_volume(0.2)
             pygame.mixer.music.play()

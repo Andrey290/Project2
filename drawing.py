@@ -17,6 +17,7 @@ class Drawing():
                          "4": pygame.image.load("textures/wall4.png").convert(),
                          "nebo": pygame.image.load("textures/nebo.png").convert(),
                          "ms": pygame.image.load("textures/morningstar.png").convert(),
+                         "vhs1": pygame.image.load("textures/vhs1.png").convert(),
                          }
 
     def background(self, angle):
@@ -28,7 +29,6 @@ class Drawing():
         morning_star.set_colorkey(BLACK)
         self.screeen.blit(self.textures["ms"], (WIDTH // 4, 0))
         pygame.draw.rect(self.screeen, (255, 255, 255), (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
-
 
     def world(self, player_pos, player_angle):
         ray_casting(self.screeen, player_pos, player_angle, self.textures)
@@ -49,45 +49,15 @@ class Drawing():
         self.screeen.blit(self.sc_map, (0, (HEIGHT - HEIGHT // MAP_SCALE)))
 
     def mixer(self):
-        for _ in range(100):
-            # red
-            h = random.randrange(0, HEIGHT)
-            w = random.randrange(0, WIDTH)
-            lenth = random.randrange(10, 100)
-            fat = random.randrange(2, 5)
-            pygame.draw.line(self.screeen, (255, 0, 0), (w, h),  (w + lenth, h), fat)
-        for _ in range(100):
-            # green
-            h = random.randrange(0, HEIGHT)
-            w = random.randrange(0, WIDTH)
-            lenth = random.randrange(10, 200)
-            fat = random.randrange(1, 3)
-            pygame.draw.line(self.screeen, (0, 255, 0), (w, h),  (w + lenth, h), fat)
-        for _ in range(100):
-            # blue
-            h = random.randrange(0, HEIGHT)
-            w = random.randrange(0, WIDTH)
-            fat = random.randrange(1, 3)
-            lenth = random.randrange(10, 200)
-            pygame.draw.line(self.screeen, (0, 0, 255), (w, h),  (w + lenth, h), fat)
-        for _ in range(100):
-            # white
-            h = random.randrange(0, HEIGHT)
-            w = random.randrange(0, WIDTH)
-            lenth = random.randrange(10, 200)
-            fat = random.randrange(1, 3)
-            pygame.draw.line(self.screeen, (255, 255, 255), (w, h),  (w + lenth, h), fat)
-        for _ in range(100):
-            # pink
-            h = random.randrange(0, HEIGHT)
-            lenth = random.randrange(10, 200)
-            w = random.randrange(0, WIDTH)
-            fat = random.randrange(1, 3)
-            pygame.draw.line(self.screeen, (255, 0, 255), (w, h),  (w + lenth, h), fat)
-        for _ in range(100):
-            # gray
-            h = random.randrange(0, HEIGHT)
-            w = random.randrange(0, WIDTH)
-            lenth = random.randrange(10, 200)
-            fat = random.randrange(1, 3)
-            pygame.draw.line(self.screeen, (100, 100, 100), (w, h),  (w + lenth, h), fat)
+        for _ in range(random.randrange(50, 250)):
+            params = [("red", (255, 0, 0), random.randrange(10, 100), random.randrange(2, 5)),
+                      ("green", (0, 255, 0), random.randrange(10, 200), random.randrange(1, 3)),
+                      ("blue", (0, 0, 255), random.randrange(10, 200), random.randrange(1, 3)),
+                      ("white", (255, 255, 255), random.randrange(10, 200), random.randrange(1, 3)),
+                      ("pink", (200, 0, 200), random.randrange(10, 200), random.randrange(1, 3))]
+            for color in params:
+                h = random.randrange(0, HEIGHT)
+                w = random.randrange(0, WIDTH)
+                lenth = color[2]
+                fat = color[3]
+                pygame.draw.line(self.screeen, color[1], (w, h), (w + lenth, h), fat)

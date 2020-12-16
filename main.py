@@ -29,8 +29,8 @@ while running:
     dr.background(player.angle)
     dr.world(player.pos, player.angle)
     dr.fps(clock)
-    dr.mixer()
     # dr.mini_map(player)
+    dr.mixer()
 
     pygame.display.flip()
     clock.tick(FPS)

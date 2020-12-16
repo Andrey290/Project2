@@ -15,13 +15,17 @@ player = Player()
 dr = drawing.Drawing(screen, sc_map)
 mus.play()
 
-
+flag = False
 running = True
 while running:
     drawing_map = False
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = not running
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                print(1)
+                flag = not flag
 
     player.move()
     screen.fill(BLACK)
@@ -30,7 +34,7 @@ while running:
     dr.world(player.pos, player.angle)
     dr.fps(clock)
     # dr.mini_map(player)
-    dr.mixer()
+    dr.mixer(flag)
 
     pygame.display.flip()
     clock.tick(FPS)

@@ -48,16 +48,17 @@ class Drawing():
             pygame.draw.rect(self.sc_map, (255, 0, 0), (coord[0], coord[1], MAP_TILE, MAP_TILE), 2)
         self.screeen.blit(self.sc_map, (0, (HEIGHT - HEIGHT // MAP_SCALE)))
 
-    def mixer(self):
-        for _ in range(random.randrange(50, 250)):
-            params = [("red", (255, 0, 0), random.randrange(10, 100), random.randrange(2, 5)),
-                      ("green", (0, 255, 0), random.randrange(10, 200), random.randrange(1, 3)),
-                      ("blue", (0, 0, 255), random.randrange(10, 200), random.randrange(1, 3)),
-                      ("white", (255, 255, 255), random.randrange(10, 200), random.randrange(1, 3)),
-                      ("pink", (200, 0, 200), random.randrange(10, 200), random.randrange(1, 3))]
-            for color in params:
-                h = random.randrange(0, HEIGHT)
-                w = random.randrange(0, WIDTH)
-                lenth = color[2]
-                fat = color[3]
-                pygame.draw.line(self.screeen, color[1], (w, h), (w + lenth, h), fat)
+    def mixer(self, flag):
+        if flag:
+            for _ in range(random.randrange(50, 250)):
+                params = [("red", (255, 0, 0), random.randrange(10, 100), random.randrange(2, 5)),
+                          ("green", (0, 255, 0), random.randrange(10, 200), random.randrange(1, 3)),
+                          ("blue", (0, 0, 255), random.randrange(10, 200), random.randrange(1, 3)),
+                          ("white", (255, 255, 255), random.randrange(10, 200), random.randrange(1, 3)),
+                          ("pink", (200, 0, 200), random.randrange(10, 200), random.randrange(1, 3))]
+                for color in params:
+                    h = random.randrange(0, HEIGHT)
+                    w = random.randrange(0, WIDTH)
+                    lenth = color[2]
+                    fat = color[3]
+                    pygame.draw.line(self.screeen, color[1], (w, h), (w + lenth, h), fat)

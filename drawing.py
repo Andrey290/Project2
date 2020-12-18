@@ -17,7 +17,6 @@ class Drawing():
                          "4": pygame.image.load("textures/wall4.png").convert(),
                          "nebo": pygame.image.load("textures/nebo.png").convert(),
                          "ms": pygame.image.load("textures/morningstar.png").convert(),
-                         "vhs1": pygame.image.load("textures/vhs1.png").convert(),
                          }
 
     def background(self, angle):
@@ -27,11 +26,15 @@ class Drawing():
         self.screeen.blit(self.textures["nebo"], (nebo_offset + WIDTH, 0))
         morning_star = self.textures["ms"]
         morning_star.set_colorkey(BLACK)
-        self.screeen.blit(self.textures["ms"], (WIDTH // 4, 0))
+        self.screeen.blit(self.textures["ms"], (200, 0))
         pygame.draw.rect(self.screeen, (255, 255, 255), (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
 
-    def world(self, player_pos, player_angle):
-        ray_casting(self.screeen, player_pos, player_angle, self.textures)
+    def world(self, world_objects):
+        for obj in world_objects:
+            if obj[0]:
+                #
+                _, object, object_pos = obj
+                self.screeen.blit(object, object_pos)
 
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))

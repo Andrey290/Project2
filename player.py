@@ -33,3 +33,4 @@ class Player:
         if keys[pygame.K_e]:
             self.angle += angle_speed
 
+        self.angle %= math.pi * 2

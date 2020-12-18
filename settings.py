@@ -24,11 +24,15 @@ DIST = NUM_RAYS / (2 * math.tan(HALF_FOV))
 PROJ_COEFF = 3 * DIST * TILE
 SCALE = WIDTH // NUM_RAYS
 
-player_position = (HALF_WIDTH, HALF_HEIGHT)
+player_position = (HALF_WIDTH // 2, 3 * HALF_HEIGHT // 2)
 player_angle = 0
-player_speed = 5
+player_speed = 2
 angle_speed = 0.02
 
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
+
+
+# настройки спрайтов
+CENTER_RAY = NUM_RAYS // 2 - 1

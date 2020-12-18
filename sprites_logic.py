@@ -11,8 +11,7 @@ class Sprites:
         }
         # список самих объектов
         self.sprite_objects = [
-            SpriteObject(self.sprite_types["colon1"], True, (5.1, 2.1), 1.8, 0.4),
-            SpriteObject(self.sprite_types["colon1"], True, (5.9, 2.1), 1.8, 0.4)
+            SpriteObject(self.sprite_types["colon1"], True, (5.1, 1.1), 0.15, 1.2)
         ]
 
 # класс, всесторонне описывающий объект спрайта
@@ -54,9 +53,9 @@ class SpriteObject:
             shift = half_proj_height * self.shift
 
             # рассчёт дислокации спрайта на экране
-            sprite_pos = (current_ray * SCALE - half_proj_height, HALF_HEIGHT - 5 * half_proj_height + shift)
+            sprite_pos = (current_ray * SCALE - half_proj_height, HALF_HEIGHT - half_proj_height + shift)
             # перерассчёт размеров спрайта
-            sprite = pygame.transform.scale(self.object, (proj_height, 3 * proj_height))
+            sprite = pygame.transform.scale(self.object, (proj_height, proj_height))
             # сие идёт в рейкаст функцию  (сначала в world в двоувинге)
             return (dist_to_sprt, sprite, sprite_pos)
         return (False,)

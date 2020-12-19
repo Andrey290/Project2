@@ -11,7 +11,7 @@ class Sprites:
         }
         # список самих объектов
         self.sprite_objects = [
-            SpriteObject(self.sprite_types["colon1"], True, (5.1, 1.1), 0.15, 1.2)
+            SpriteObject(self.sprite_types["colon1"], True, (5.1, 1.1), 0, 1.5)
         ]
 
 # класс, всесторонне описывающий объект спрайта
@@ -46,7 +46,7 @@ class SpriteObject:
         # проверка на то, что //спрайт в зоне видимости// и //его не закрывает стена//
         if 0 <= current_ray <= NUM_RAYS - 1 and dist_to_sprt < walls[current_ray][0]:
             # проекционная высота спрайта
-            proj_height = int(PROJ_COEFF / dist_to_sprt * self.scale)
+            proj_height = min(int(PROJ_COEFF / dist_to_sprt * self.scale), 2 * HEIGHT)
             # кофециент  масштабирования
             half_proj_height = proj_height // 2
             # высота спрайта

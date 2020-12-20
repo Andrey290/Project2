@@ -14,6 +14,7 @@ class Sprites:
             SpriteObject(self.sprite_types["colon1"], True, (5.1, 1.1), 0, 1.5)
         ]
 
+
 # класс, всесторонне описывающий объект спрайта
 class SpriteObject:
     def __init__(self, object, static, pos, shift, scale):
@@ -58,4 +59,4 @@ class SpriteObject:
             sprite = pygame.transform.scale(self.object, (proj_height, proj_height))
             # сие идёт в рейкаст функцию  (сначала в world в двоувинге)
             return (dist_to_sprt, sprite, sprite_pos)
-        return (False,)
+        return [0]

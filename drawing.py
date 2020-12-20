@@ -6,7 +6,8 @@ import random
 
 
 class Drawing():
-    def __init__(self, screen, sc_map):
+    def __init__(self, screen, sc_map, player):
+        self.player = player
         self.screeen = screen
         self.sc_map = sc_map
         self.font = pygame.font.SysFont("Arial", 36, bold=True)
@@ -36,10 +37,21 @@ class Drawing():
                 _, object, object_pos = obj
                 self.screeen.blit(object, object_pos)
 
+
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))
         render = self.font.render(display_fps, 0, (255, 0, 0))
         self.screeen.blit(render, FPS_POS)
+
+        py = str(int(self.player.y))
+        if self.player.y // TILE >= 18:
+            render = self.font.render(py, 0, (255, 0, 0))
+            self.screeen.blit(render, X_POS)
+        else:
+            render = self.font.render(py, 0, (0, 255, 0))
+            self.screeen.blit(render, X_POS)
+
+
 
     def mini_map(self, player):
         self.sc_map.fill(BLACK)

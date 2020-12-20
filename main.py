@@ -13,7 +13,7 @@ sc_map = pygame.Surface((WIDTH // MAP_SCALE, HEIGHT // MAP_SCALE))
 sprites = Sprites()
 clock = pygame.time.Clock()
 player = Player()
-dr = drawing.Drawing(screen, sc_map)
+dr = drawing.Drawing(screen, sc_map, player)
 mus.play()
 pygame.mouse.set_visible(False)
 mixer_flag = False

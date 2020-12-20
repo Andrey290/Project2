@@ -7,6 +7,7 @@ HALF_HEIGHT = HEIGHT // 2
 FPS = 120
 TILE = 100
 FPS_POS = (WIDTH - 65, 5)
+X_POS = (WIDTH - 65, 65)
 
 TEXTURE_WIDTH = 1200
 TEXTURE_HEIGHT = 1200
@@ -25,7 +26,7 @@ PROJ_COEFF = 3 * DIST * TILE
 SCALE = WIDTH // NUM_RAYS
 
 player_position = (HALF_WIDTH // 2, 3 * HALF_HEIGHT // 2)
-player_angle = 0
+player_angle = -80
 player_speed = 2
 angle_speed = 0.02
 

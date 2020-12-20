@@ -11,7 +11,7 @@ class Sprites:
         }
         # список самих объектов
         self.sprite_objects = [
-            SpriteObject(self.sprite_types["colon1"], True, (5.1, 1.1), 0, 1.5)
+            SpriteObject(self.sprite_types["colon1"], True, (5.1, 2), 4, 1.1)
         ]
 
 

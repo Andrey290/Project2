@@ -8,13 +8,13 @@ class Sprites:
         # список(зачёркнуто)словарь изображений спрайтов
         self.sprite_types = {
             "colon1": pygame.image.load("textures/sprites/colon1.png").convert_alpha(),
-            "computer1": pygame.image.load("textures/sprites/computer1.png").convert_alpha()
+            "computer1": [pygame.image.load(f"textures/sprites/computors/{i}1.png").convert_alpha() for i in range(8)]
         }
         # список самих объектов
         # (картынка, тру, (x, y), высота, масштаб)
         self.sprite_objects = [
             SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5),
-            SpriteObject(self.sprite_types["computer1"], False, (5.8, 6.8), 0.4, 0.8)
+            SpriteObject(self.sprite_types["computer1"], False, (5.8, 1.8), 0.4, 0.8)
         ]
 
 
@@ -26,6 +26,10 @@ class SpriteObject:
         self.pos = self.x, self.y = pos[0] * TILE, pos[1] * TILE
         self.shift = shift
         self.scale = scale
+
+        if not static:
+            self.sprite_angles = [frozenset(range(i, i + 45)) for i in range(0, 360, 45)]
+            self.sprite_positions = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
 
     # функция, отвечающая за локацию спрайта
     def object_locate(self, player, walls):
@@ -55,6 +59,17 @@ class SpriteObject:
             half_proj_height = proj_height // 2
             # высота спрайта
             shift = half_proj_height * self.shift
+
+            # алгоритм выбора правильного спрайта в зависимости от угла
+            if not self.static:
+                if theta < 0:
+                    theta += math.pi * 2
+                theta = 360 - int(math.degrees(theta))
+
+                for angles in self.sprite_angles:
+                    if theta in angles:
+                        self.object = self.sprite_positions[angles]
+                        break
 
             # рассчёт дислокации спрайта на экране
             sprite_pos = (current_ray * SCALE - half_proj_height, HALF_HEIGHT - half_proj_height + shift)

@@ -20,6 +20,7 @@ class Drawing():
                          "ms": pygame.image.load("textures/morningstar.png").convert(),
                          }
 
+    # метот отрисовки фона
     def background(self, angle):
         nebo_offset = -5 * math.degrees(angle) % WIDTH
         self.screeen.blit(self.textures["nebo"], (nebo_offset, 0))
@@ -30,6 +31,7 @@ class Drawing():
         self.screeen.blit(self.textures["ms"], (200, 0))
         pygame.draw.rect(self.screeen, (255, 255, 255), (0, HEIGHT // 2, WIDTH, HEIGHT // 2))
 
+    # метод нарисовывания всего
     def world(self, world_objects):
         for obj in world_objects:
             if obj[0]:
@@ -37,19 +39,19 @@ class Drawing():
                 _, object, object_pos = obj
                 self.screeen.blit(object, object_pos)
 
-
+    # отрисовка дополнительной информации
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))
         render = self.font.render(display_fps, 0, (255, 0, 0))
         self.screeen.blit(render, FPS_POS)
-
-        py = str(int(self.player.y))
-        if self.player.y // TILE >= 18:
-            render = self.font.render(py, 0, (255, 0, 0))
-            self.screeen.blit(render, X_POS)
-        else:
-            render = self.font.render(py, 0, (0, 255, 0))
-            self.screeen.blit(render, X_POS)
+        #
+        # py = str(int(self.player.y))
+        # if self.player.y // TILE >= 18:
+        #     render = self.font.render(py, 0, (255, 0, 0))
+        #     self.screeen.blit(render, X_POS)
+        # else:
+        #     render = self.font.render(py, 0, (0, 255, 0))
+        #     self.screeen.blit(render, X_POS)
 
 
 

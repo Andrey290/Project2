@@ -10,8 +10,9 @@ class Sprites:
             "colon1": pygame.image.load("textures/sprites/colon1.png").convert_alpha()
         }
         # список самих объектов
+        # (картынка, тру, (x, y), высота, масштаб)
         self.sprite_objects = [
-            SpriteObject(self.sprite_types["colon1"], True, (5.1, 2), 4, 1.1)
+            SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5)
         ]
 
 

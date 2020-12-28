@@ -8,6 +8,7 @@ class Player:
         self.x, self.y = player_position
         self.angle = player_angle
 
+    # свойство, которое возвращает позицию по x и y
     @property
     def pos(self):
         return (self.x, self.y)

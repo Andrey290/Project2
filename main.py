@@ -24,8 +24,9 @@ dr = drawing.Drawing(screen, sc_map, player)
 mus.play()
 # настройки курсора
 all_sprites = pygame.sprite.Group()
-cur_im = pygame.image.load("cur1.png").convert()
-cur  = pygame.sprite.Sprite(all_sprites)
+cur_im = pygame.image.load("textures\cur1.png").convert()
+cur = pygame.sprite.Sprite(all_sprites)
+cur_im.set_colorkey(WHITE)
 cur.image = cur_im
 cur.rect = cur.image.get_rect()
 pygame.mouse.set_visible(False)
@@ -43,8 +44,6 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 mixer_flag = not mixer_flag  # включение помехов на клавишу р
-    if pygame.mouse.get_focused():
-        all_sprites.draw(screen)
 
     player.move()
     screen.fill(BLACK)
@@ -57,6 +56,8 @@ while running:
     walls = ray_casting(player, dr.textures)
     # нарисовывание стен + спрайтов
     dr.world(walls + [obj.object_locate(player, walls) for obj in sprites.sprite_objects])
+    if pygame.mouse.get_focused():
+        all_sprites.draw(screen)
     # фпс
     dr.fps(clock)
     # помехи

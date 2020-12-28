@@ -7,12 +7,14 @@ class Sprites:
     def __init__(self):
         # список(зачёркнуто)словарь изображений спрайтов
         self.sprite_types = {
-            "colon1": pygame.image.load("textures/sprites/colon1.png").convert_alpha()
+            "colon1": pygame.image.load("textures/sprites/colon1.png").convert_alpha(),
+            "computer1": pygame.image.load("textures/sprites/computer1.png").convert_alpha()
         }
         # список самих объектов
         # (картынка, тру, (x, y), высота, масштаб)
         self.sprite_objects = [
-            SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5)
+            SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5),
+            SpriteObject(self.sprite_types["computer1"], False, (5.8, 6.8), 0.4, 0.8)
         ]
 
 

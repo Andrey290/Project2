@@ -11,10 +11,10 @@ class Sprites:
             "computer1": [pygame.image.load(f"textures/sprites/computors/comps/{i}2.png").convert_alpha() for i in range(8)]
         }
         # список самих объектов
-        # (картынка, тру, (x, y), высота, масштаб)
+        # (картынка, статичность, (x, y), высота, масштаб)
         self.sprite_objects = [
             SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5),
-            SpriteObject(self.sprite_types["computer1"], False, (3.8, 3.8), 0.6, 0.8)
+            SpriteObject(self.sprite_types["computer1"], False, (3, 5), 0.6, 0.8)
         ]
 
 
@@ -54,7 +54,10 @@ class SpriteObject:
         # проверка на то, что //спрайт в зоне видимости// и //его не закрывает стена//
         if 0 <= current_ray <= NUM_RAYS - 1 and dist_to_sprt < walls[current_ray][0]:
             # проекционная высота спрайта
-            proj_height = min(int(PROJ_COEFF / dist_to_sprt * self.scale), 2 * HEIGHT)
+            if dist_to_sprt * self.scale != 0:
+                proj_height = min(int(PROJ_COEFF / dist_to_sprt * self.scale), 2 * HEIGHT)
+            else:
+                proj_height = 2 * HEIGHT
             # кофециент  масштабирования
             half_proj_height = proj_height // 2
             # высота спрайта

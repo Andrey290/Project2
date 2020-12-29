@@ -32,7 +32,7 @@ SCALE = WIDTH // NUM_RAYS  # коеффиециент количестваува
 # настройки игрока
 player_position = (HALF_WIDTH // 2, 3 * HALF_HEIGHT // 2)  # стартовая позиция
 player_angle = -80  # стартовый угол (в джоулях на парсек)
-player_speed = 5  # скорасть
+player_speed = 2  # скорасть
 angle_speed = 0.02  # скорасть паварота
 
 # разные цвета

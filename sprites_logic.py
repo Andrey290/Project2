@@ -14,7 +14,7 @@ class Sprites:
         # (картынка, тру, (x, y), высота, масштаб)
         self.sprite_objects = [
             SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5),
-            SpriteObject(self.sprite_types["computer1"], False, (3.8, 3.8), 0.4, 0.8)
+            SpriteObject(self.sprite_types["computer1"], False, (3.8, 3.8), 0.6, 0.8)
         ]
 
 

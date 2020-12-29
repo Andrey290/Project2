@@ -8,13 +8,13 @@ class Sprites:
         # список(зачёркнуто)словарь изображений спрайтов
         self.sprite_types = {
             "colon1": pygame.image.load("textures/sprites/colon1.png").convert_alpha(),
-            "computer1": [pygame.image.load(f"textures/sprites/computors/{i}1.png").convert_alpha() for i in range(8)]
+            "computer1": [pygame.image.load(f"textures/sprites/computors/comps/{i}2.png").convert_alpha() for i in range(8)]
         }
         # список самих объектов
         # (картынка, тру, (x, y), высота, масштаб)
         self.sprite_objects = [
             SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5),
-            SpriteObject(self.sprite_types["computer1"], False, (5.8, 1.8), 0.4, 0.8)
+            SpriteObject(self.sprite_types["computer1"], False, (3.8, 3.8), 0.4, 0.8)
         ]
 
 

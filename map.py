@@ -1,24 +1,34 @@
 from settings import *
+import pygame
 
-map_strings = ["2222222222222222222222222222222222222222222",
-               "2000300000000000200030000001000000000000002",
-               "2000303333033330200033300001000011110000002",
-               "2000002111011120000000200001000044410000002",
-               "2000002100000120000022200000000044410000002",
-               "2000002100000122220000200001000044410000002",
-               "2000002111111140000000000001000000000000002",
-               "2222222222222222222222222222222222222222222"]
+_ = False # ничто
+matrix_map = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+               [1, _, _, _, _, _, _, _, _, 1],
+               [1, _, _, _, _, _, _, _, _, 1],
+               [1, _, _, _, _, _, _, _, _, 1],
+               [1, _, _, _, _, _, _, _, _, 1],
+               [1, _, _, _, _, _, _, _, _, 1],
+               [1, _, _, _, 4, _, _, _, _, 1],
+               [1, _, _, 3, 3, _, _, _, _, 1],
+               [1, _, _, _, 2, _, _, _, _, 1],
+               [1, _, _, _, _, _, _, _, _, 1],
+               [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], ]
+
+WORLD_WIDTH = len(matrix_map[0]) * TILE
+WORLD_HEIGHT = len(matrix_map) * TILE
 world_map = {}  # каардинады стен и их тикстурный номер на риальной карте
 mini_map = set()  # координаты стен на менекарте
-for j, row in enumerate(map_strings):
+collision_walls = []
+for j, row in enumerate(matrix_map):
     for i, char in enumerate(row):
-        if int(char) != 0:
+        if char:
             mini_map.add((i * MAP_TILE, j * MAP_TILE))
-            if char == "1":
-                world_map[(i * TILE, j * TILE)] = "1"
-            elif char == "2":
-                world_map[(i * TILE, j * TILE)] = "2"
-            elif char == "3":
-                world_map[(i * TILE, j * TILE)] = "3"
-            elif char == "4":
-                world_map[(i * TILE, j * TILE)] = "4"
+            collision_walls.append(pygame.Rect(i * TILE, j * TILE, TILE, TILE))
+            if char == 1:
+                world_map[(i * TILE, j * TILE)] = 1
+            elif char == 2:
+                world_map[(i * TILE, j * TILE)] = 2
+            elif char == 3:
+                world_map[(i * TILE, j * TILE)] = 3
+            elif char == 4:
+                world_map[(i * TILE, j * TILE)] = 4

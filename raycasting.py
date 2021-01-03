@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from map import world_map
+from map import world_map, WORLD_WIDTH, WORLD_HEIGHT
 
 
 # функция нахождения координат левого верхнего угла
@@ -19,8 +19,8 @@ def ray_casting(player, textures):
         cos_a = math.cos(cur_angle)  # косинус
 
         # номер текстуры края карты (которая с Тедом Нельсоном и html)
-        texture_v = "0"
-        texture_h = "0"
+        texture_v = 666
+        texture_h = 666
 
         # рассмотрим пересечение с вертикалями
         if cos_a >= 0:
@@ -29,7 +29,7 @@ def ray_casting(player, textures):
         else:
             x = xm
             dx = -1
-        for i in range(0, WIDTH, TILE):
+        for i in range(0, WORLD_WIDTH, TILE):
             depth_v = (x - x0) / cos_a  # расстояние до вертикали
             yv = y0 + depth_v * sin_a  # координата y пересечения
             tile_v = mapping(x + dx, yv)
@@ -44,7 +44,7 @@ def ray_casting(player, textures):
         else:
             y = ym
             dy = -1
-        for i in range(0, HEIGHT, TILE):
+        for i in range(0, WORLD_HEIGHT, TILE):
             depth_h = (y - y0) / sin_a # расстояние до горизонтали
             xh = x0 + depth_h * cos_a # координата y пересечения
             tile_h = mapping(xh, y + dy)
@@ -60,7 +60,7 @@ def ray_casting(player, textures):
             offset = int(offset) % TILE
             depth *= math.cos(player.angle - cur_angle)  # расстояние до объекта
             depth = 0.000001 if not depth else depth
-            proj_height = min(int(PROJ_COEFF / depth), 2 * HEIGHT)  # проекционная высота
+            proj_height = min(int(PROJ_COEFF / depth), HEIGHT_COMP_5)  # проекционная высота
             # создаём субповерхность с куском текстуры по нашеё формуле
             wall_column = textures[texture].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
             # трансформируем изображение

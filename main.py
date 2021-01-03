@@ -8,16 +8,16 @@ import mus
 
 pygame.init()
 pygame.display.set_caption(
-    "Рыцарский роман в сети:/Vойна за Vенеру:/глава1 'Инопланетный бог смерти 2002':/ уровень1 'Призрачный восторг'")
+    "Knights of the Net'")
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-sc_map = pygame.Surface((WIDTH // MAP_SCALE, HEIGHT // MAP_SCALE))
+sc_map = pygame.Surface(MINIMAP_RES)
 
 # спрайты
 sprites = Sprites()
 # фремя
 clock = pygame.time.Clock()
 # объект игрока
-player = Player()
+player = Player(sprites)
 # объект класса рисование из файла рисование что непонятного то
 dr = drawing.Drawing(screen, sc_map, player)
 # играние музыки
@@ -37,7 +37,7 @@ running = True
 while running:
     drawing_map = False
     for event in pygame.event.get():
-        if event.type == pygame.QUIT or event.type == pygame.K_ESCAPE:
+        if event.type == pygame.QUIT or event.type == pygame.K_END:
             running = not running
         if event.type == pygame.MOUSEMOTION:
             cur.rect.topleft = event.pos
@@ -45,7 +45,7 @@ while running:
             if event.key == pygame.K_p:
                 mixer_flag = not mixer_flag  # включение помехов на клавишу р
 
-    player.move()
+    player.movement()
     screen.fill(BLACK)
 
     # рисование
@@ -56,13 +56,14 @@ while running:
     walls = ray_casting(player, dr.textures)
     # нарисовывание стен + спрайтов
     dr.world(walls + [obj.object_locate(player, walls) for obj in sprites.sprite_objects])
-    if pygame.mouse.get_focused():
-        all_sprites.draw(screen)
+    # открисовка курсора (включать только в меню и на экранах терминалов)
+    # if pygame.mouse.get_focused():
+    #     all_sprites.draw(screen)
     # фпс
     dr.fps(clock)
     # помехи
     dr.mixer(mixer_flag)
-
+    # dr.mini_map(player)
     pygame.display.flip()
     clock.tick(FPS)
 pygame.quit()

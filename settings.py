@@ -5,6 +5,8 @@ WIDTH = 1200  # ширина окна
 HEIGHT = 800  # вышина окна
 HALF_WIDTH = WIDTH // 2  # половина ширины
 HALF_HEIGHT = HEIGHT // 2  # половина высоты
+HEIGHT_COMP_5 = 5 * HEIGHT
+HEIGHT_COMP_2 = 2 * HEIGHT
 FPS = 120  # фпс
 TILE = 100  # размер квадрата карты(толщена стенов)
 
@@ -16,13 +18,17 @@ TEXTURE_WIDTH = 1200
 TEXTURE_HEIGHT = 1200
 TEXTURE_SCALE = TEXTURE_WIDTH // TILE
 
-MAP_SCALE = 5
+MINIMAP_SCALE = 5
+MINIMAP_RES = (WIDTH // MINIMAP_SCALE, HEIGHT // MINIMAP_SCALE)
+MAP_SCALE = 3 * MINIMAP_SCALE
 MAP_TILE = TILE // MAP_SCALE
+MAP_POS = (0, HEIGHT - HEIGHT // MINIMAP_SCALE)
 
 # настройки рейкастинга
 FOV = math.pi / 3
 HALF_FOV = FOV / 2
 NUM_RAYS = 300
+FAKE_RAYS = 100
 MAX_DEPTH = 3600
 DELTA_ANGLE = FOV / NUM_RAYS
 DIST = NUM_RAYS / (2 * math.tan(HALF_FOV))  # расстояние от игрока до экрана

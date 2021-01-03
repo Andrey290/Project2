@@ -1,38 +1,88 @@
 from settings import *
 import pygame
+from collections import deque
 
 
 # класс, хранящий информацию о спрайтах
 class Sprites:
     def __init__(self):
-        # список(зачёркнуто)словарь изображений спрайтов
-        self.sprite_types = {
-            "colon1": pygame.image.load("textures/sprites/colon1.png").convert_alpha(),
-            "computer1": [pygame.image.load(f"textures/sprites/computors/comps/{i}2.png").convert_alpha() for i in range(8)]
+        # словарь словарей со спрайтами
+        self.sprite_params = {
+            "sprite_fire": {
+                "sprite": pygame.image.load("textures/sprites/fire/base/fire.png").convert_alpha(),
+                "viewing_angles": None,
+                "shift": 1.8,
+                "scale": 0.4,
+                "animation": deque(
+                    [pygame.image.load(f"textures/sprites/fire/anim/{i}.png").convert_alpha() for i in range(10)]),
+                "animation_dist": 1000,
+                "animation_speed": 10,
+                "seen_through_walls": False,
+                "blocked": False
+            },
+            "sprite_colon": {
+                "sprite": pygame.image.load("textures/sprites/colons/base/colon.png").convert_alpha(),
+                "viewing_angles": None,
+                "shift": 0,
+                "scale": 1.5,
+                "animation": deque(
+                    [pygame.image.load(f"textures/sprites/fire/anim/{i}.png").convert_alpha() for i in range(0)]),
+                "animation_dist": 1000,
+                "animation_speed": 10,
+                "seen_through_walls": False,
+                "blocked": True
+            },
+            "sprite_comp": {
+                "sprite": [pygame.image.load(f"textures/sprites/computors/angled/{i}2.png").convert_alpha() for i in
+                           range(8)],
+                "viewing_angles": True,
+                "shift": 0.6,
+                "scale": 0.8,
+                "animation": deque(
+                    [pygame.image.load(f"textures/sprites/fire/anim/{i}.png").convert_alpha() for i in range(0)]),
+                "animation_dist": 1000,
+                "animation_speed": 10,
+                "seen_through_walls": False,
+                "blocked": True
+            }
         }
+
         # список самих объектов
-        # (картынка, статичность, (x, y), высота, масштаб)
+        # (параметры, (x, y))
         self.sprite_objects = [
-            SpriteObject(self.sprite_types["colon1"], True, (5.1, 4), 0, 1.5),
-            SpriteObject(self.sprite_types["computer1"], False, (3, 5), 0.6, 0.8)
+            SpriteObject(self.sprite_params["sprite_colon"], (5, 4)),
+            SpriteObject(self.sprite_params["sprite_fire"], (4, 4)),
+            SpriteObject(self.sprite_params["sprite_comp"], (3, 4)),
         ]
 
+    # класс, всесторонне описывающий объект спрайта
 
-# класс, всесторонне описывающий объект спрайта
+
 class SpriteObject:
-    def __init__(self, object, static, pos, shift, scale):
-        self.object = object
-        self.static = static
-        self.pos = self.x, self.y = pos[0] * TILE, pos[1] * TILE
-        self.shift = shift
-        self.scale = scale
+    def __init__(self, parameters, pos):
+        self.object = parameters['sprite']
+        self.viewing_angles = parameters['viewing_angles']
+        self.shift = parameters['shift']
+        self.scale = parameters['scale']
+        self.animation = parameters['animation']
+        self.animation_dist = parameters['animation_dist']
+        self.animation_speed = parameters['animation_speed']
+        self.animation_count = 0
+        self.blocked = parameters['blocked']
+        self.side = 30
+        self.x, self.y = pos[0] * TILE, pos[1] * TILE
+        self.pos = self.x - self.side // 2, self.y  - self.side // 2
 
-        if not static:
+        if self.viewing_angles:
             self.sprite_angles = [frozenset(range(i, i + 45)) for i in range(0, 360, 45)]
             self.sprite_positions = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
 
     # функция, отвечающая за локацию спрайта
     def object_locate(self, player, walls):
+        fake_walls0 = [walls[0] for _ in range(FAKE_RAYS)]
+        fake_walls1 = [walls[-1] for _ in range(FAKE_RAYS)]
+        fake_walls = fake_walls0 + walls + fake_walls1
+
         # шахматное расстояниие до спрайта
         dx, dy = self.x - player.x, self.y - player.y
         # расстояние до спрайта напрямую
@@ -51,10 +101,11 @@ class SpriteObject:
         # убирание эффекта рыбьего глаза забей (я сам не понимаю, как это работает)
         dist_to_sprt *= math.cos(HALF_FOV - current_ray * DELTA_ANGLE)
 
+        fake_ray = current_ray + FAKE_RAYS
         # проверка на то, что //спрайт в зоне видимости// и //его не закрывает стена//
-        if 0 <= current_ray <= NUM_RAYS - 1 and dist_to_sprt < walls[current_ray][0]:
+        if 0 <= fake_ray <= NUM_RAYS - 1 + 2 * FAKE_RAYS and dist_to_sprt < fake_walls[fake_ray][0]:
             # проекционная высота спрайта
-            if dist_to_sprt * self.scale != 0:
+            if dist_to_sprt * self.scale:
                 proj_height = min(int(PROJ_COEFF / dist_to_sprt * self.scale), 2 * HEIGHT)
             else:
                 proj_height = 2 * HEIGHT
@@ -64,7 +115,7 @@ class SpriteObject:
             shift = half_proj_height * self.shift
 
             # алгоритм выбора правильного спрайта в зависимости от угла
-            if not self.static:
+            if self.viewing_angles:
                 if theta < 0:
                     theta += math.pi * 2
                 theta = 360 - int(math.degrees(theta))
@@ -74,10 +125,20 @@ class SpriteObject:
                         self.object = self.sprite_positions[angles]
                         break
 
+            sprite_object = self.object
+            if self.animation and dist_to_sprt < self.animation_dist:
+                sprite_object = self.animation[0]
+                if self.animation_count < self.animation_speed:
+                    self.animation_count += 1
+                else:
+                    self.animation.rotate()
+                    self.animation_count = 0
+
             # рассчёт дислокации спрайта на экране
             sprite_pos = (current_ray * SCALE - half_proj_height, HALF_HEIGHT - half_proj_height + shift)
             # перерассчёт размеров спрайта
-            sprite = pygame.transform.scale(self.object, (proj_height, proj_height))
+            sprite = pygame.transform.scale(sprite_object, (proj_height, proj_height))
             # сие идёт в рейкаст функцию  (сначала в world в двоувинге)
             return (dist_to_sprt, sprite, sprite_pos)
+
         return [0]

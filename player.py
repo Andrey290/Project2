@@ -52,7 +52,7 @@ class Player:
         self.key_move()
         self.rect.center = self.x, self.y
         # лично я больше люблю клавиши
-        # self.mouse_move()
+        self.mouse_move()
         self.angle %= math.pi * 2
 
     def key_move(self):

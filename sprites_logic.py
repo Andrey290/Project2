@@ -1,6 +1,7 @@
 from settings import *
 import pygame
 from collections import deque
+from raycasting import *
 
 
 # класс, хранящий информацию о спрайтах
@@ -17,8 +18,8 @@ class Sprites:
                     [pygame.image.load(f"textures/sprites/fire/anim/{i}.png").convert_alpha() for i in range(10)]),
                 "animation_dist": 1000,
                 "animation_speed": 10,
-                "seen_through_walls": False,
-                "blocked": False
+                "blocked": False,
+                "flag": "not_door"
             },
             "sprite_colon": {
                 "sprite": pygame.image.load("textures/sprites/colons/base/colon.png").convert_alpha(),
@@ -29,8 +30,8 @@ class Sprites:
                     [pygame.image.load(f"textures/sprites/fire/anim/{i}.png").convert_alpha() for i in range(0)]),
                 "animation_dist": 1000,
                 "animation_speed": 10,
-                "seen_through_walls": False,
-                "blocked": True
+                "blocked": True,
+                "flag": "not_door"
             },
             "sprite_comp": {
                 "sprite": [pygame.image.load(f"textures/sprites/computors/angled/{i}2.png").convert_alpha() for i in
@@ -42,8 +43,20 @@ class Sprites:
                     [pygame.image.load(f"textures/sprites/fire/anim/{i}.png").convert_alpha() for i in range(0)]),
                 "animation_dist": 1000,
                 "animation_speed": 10,
-                "seen_through_walls": False,
-                "blocked": True
+                "blocked": True,
+                "flag": "not_door"
+            },
+            "sprite_eye": {
+                "sprite": pygame.image.load("textures/sprites/eye/base/0.png").convert_alpha(),
+                "viewing_angles": None,
+                "shift": 0.2,
+                "scale": 1,
+                "animation": deque(
+                    [pygame.image.load(f"textures/sprites/eye/anim/0{i}.png").convert_alpha() for i in range(12)]),
+                "animation_dist": 1000,
+                "animation_speed": 10,
+                "blocked": True,
+                "flag": "not_door"
             }
         }
 
@@ -52,7 +65,16 @@ class Sprites:
         self.sprite_objects = [
             SpriteObject(self.sprite_params["sprite_colon"], (5, 4)),
             SpriteObject(self.sprite_params["sprite_fire"], (4, 4)),
+            SpriteObject(self.sprite_params["sprite_fire"], (4.5, 4)),
+            SpriteObject(self.sprite_params["sprite_fire"], (4.7, 4)),
             SpriteObject(self.sprite_params["sprite_comp"], (3, 4)),
+            SpriteObject(self.sprite_params["sprite_comp"], (2, 4)),
+            SpriteObject(self.sprite_params["sprite_comp"], (3, 3)),
+            SpriteObject(self.sprite_params["sprite_comp"], (2, 3)),
+            SpriteObject(self.sprite_params["sprite_comp"], (3, 5)),
+            SpriteObject(self.sprite_params["sprite_comp"], (2, 5)),
+            SpriteObject(self.sprite_params["sprite_eye"], (1.3, 1.3)),
+
         ]
 
     # класс, всесторонне описывающий объект спрайта
@@ -71,10 +93,12 @@ class SpriteObject:
         self.blocked = parameters['blocked']
         self.side = 30
         self.x, self.y = pos[0] * TILE, pos[1] * TILE
-        self.pos = self.x - self.side // 2, self.y  - self.side // 2
+        self.pos = self.x - self.side // 2, self.y - self.side // 2
 
         if self.viewing_angles:
-            self.sprite_angles = [frozenset(range(i, i + 45)) for i in range(0, 360, 45)]
+            if len(self.object) == 8:
+                self.sprite_angles = [frozenset(range(338, 361)) | frozenset(range(0, 23))] + \
+                                     [frozenset(range(i, i + 45)) for i in range(23, 338, 45)]
             self.sprite_positions = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
 
     # функция, отвечающая за локацию спрайта
@@ -94,6 +118,7 @@ class SpriteObject:
         # так надо
         if dx > 0 and 180 < math.degrees(player.angle) <= 360 or dx < 0 and dy < 0:
             gamma += math.pi * 2
+        theta -= 1.4 * gamma
 
         # смщение срайта
         delta_rays = int(gamma / DELTA_ANGLE)
@@ -106,7 +131,7 @@ class SpriteObject:
         if 0 <= fake_ray <= NUM_RAYS - 1 + 2 * FAKE_RAYS and dist_to_sprt < fake_walls[fake_ray][0]:
             # проекционная высота спрайта
             if dist_to_sprt * self.scale:
-                proj_height = min(int(PROJ_COEFF / dist_to_sprt * self.scale), 2 * HEIGHT)
+                proj_height = min(int(PROJ_COEFF / dist_to_sprt * self.scale),2 * HEIGHT)
             else:
                 proj_height = 2 * HEIGHT
             # кофециент  масштабирования

@@ -22,6 +22,8 @@ def ray_casting(player, textures):
         texture_v = 666
         texture_h = 666
 
+
+
         # рассмотрим пересечение с вертикалями
         if cos_a >= 0:
             x = xm + TILE  # текущая рассматриваемая вертикаль
@@ -62,7 +64,8 @@ def ray_casting(player, textures):
             depth = 0.000001 if not depth else depth
             proj_height = min(int(PROJ_COEFF / depth), HEIGHT_COMP_5)  # проекционная высота
             # создаём субповерхность с куском текстуры по нашеё формуле
-            wall_column = textures[texture].subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
+            col_texture = textures[texture]
+            wall_column = col_texture.subsurface(offset * TEXTURE_SCALE, 0, TEXTURE_SCALE, TEXTURE_HEIGHT)
             # трансформируем изображение
             wall_column = pygame.transform.scale(wall_column, (SCALE, proj_height))
             wall_pos = (ray * SCALE, HALF_HEIGHT - proj_height // 2)

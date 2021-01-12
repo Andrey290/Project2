@@ -63,10 +63,6 @@ class Sprites:
         # список самих объектов
         # (параметры, (x, y))
         self.sprite_objects = [
-            SpriteObject(self.sprite_params["sprite_colon"], (5, 4)),
-            SpriteObject(self.sprite_params["sprite_fire"], (4, 4)),
-            SpriteObject(self.sprite_params["sprite_fire"], (4.5, 4)),
-            SpriteObject(self.sprite_params["sprite_fire"], (4.7, 4)),
             SpriteObject(self.sprite_params["sprite_comp"], (3, 4)),
             SpriteObject(self.sprite_params["sprite_comp"], (2, 4)),
             SpriteObject(self.sprite_params["sprite_comp"], (3, 3)),
@@ -96,9 +92,7 @@ class SpriteObject:
         self.pos = self.x - self.side // 2, self.y - self.side // 2
 
         if self.viewing_angles:
-            if len(self.object) == 8:
-                self.sprite_angles = [frozenset(range(338, 361)) | frozenset(range(0, 23))] + \
-                                     [frozenset(range(i, i + 45)) for i in range(23, 338, 45)]
+            self.sprite_angles = [frozenset(range(i, i + 45)) for i in range(-23, 316, 45)]
             self.sprite_positions = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
 
     # функция, отвечающая за локацию спрайта

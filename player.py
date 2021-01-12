@@ -9,7 +9,7 @@ class Player:
         self.x, self.y = player_position
         self.sprites = sprites
         self.angle = player_angle
-        self.sensivity = 0.004
+        self.sensivity = sensivity
         self.side = 50
         self.rect = pygame.Rect(*player_position, self.side, self.side)
         self.collision_sprites = [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in self.sprites.sprite_objects if obj.blocked]
@@ -59,9 +59,7 @@ class Player:
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_END]:
-            # тут должен быть выход в меню, включение курсора и автосейв, сделай его когдa-нибудь
-            exit()
+
         if keys[pygame.K_w]:
             dx = player_speed * cos_a
             dy = player_speed * sin_a

@@ -4,7 +4,7 @@ from pygame import *
 WIN_WIDTH = 760
 WIN_HEIGHT = 520
 hero = Player(0, 230)
-BACKGROUND_COLOR = "#DAA520"
+BACKGROUND_COLOR = [218, 165, 32]
 DISPLAY = (WIN_WIDTH, WIN_HEIGHT)
 block = pygame.image.load("block.jpg")
 PLATFORM_WIDTH = 20
